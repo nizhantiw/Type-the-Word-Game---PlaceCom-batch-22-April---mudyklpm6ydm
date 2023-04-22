@@ -10,19 +10,56 @@ function App() {
   const [result, setResult] = useState('');
   const [index, setIndex] = useState(0);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFlashWord(false);
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [word]);
+
+  useEffect(() => {
+    setWord(WORD_LIST[index]);
+    setFlashWord(true);
+    setUserInput('');
+    setResult('');
+  }, [index]);
+
+  const handleInputChange = (event) => {
+    setUserInput(event.target.value);
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    if (userInput.toLowerCase() === word) {
+      setResult('You Won!');
+    } else {
+      setResult('You Lost!');
+    }
+  };
+
+  const handleRestartClick = () => {
+    if (index < WORD_LIST.length - 1) {
+      setIndex(index + 1);
+    } else {
+      setIndex(0);
+    }
+  };
 
   return (
-    <div class="mini-game-container">
-      <h2 class="mini-game-title">Mini Game</h2>
-      <p class="mini-game-word">{word}</p>
-      <form class="mini-game-form" onSubmit={handleFormSubmit}>
-        <input class="mini-game-input" type="text" value={userInput} onChange={handleInputChange} />
-        <button class="mini-game-button" type="submit">Check Answer</button>
-      </form>
+    <div className="mini-game-container">
+      <h2 className="mini-game-title">Mini Game</h2>
+      {flashWord && <p className="mini-game-word">{word}</p>}
+      {!flashWord && (
+        <form className="mini-game-form" onSubmit={handleFormSubmit}>
+          <input className="mini-game-input" type="text" value={userInput} onChange={handleInputChange} />
+          <button className="mini-game-button" type="submit">Check Answer</button>
+        </form>
+      )}
       {result && (
         <>
-          <p class="mini-game-result">{result}</p>
-          <button class="mini-game-restart-button" onClick={handleRestartClick}>Restart</button>
+          <p className="mini-game-result">{result}</p>
+          <button className="mini-game-restart-button" onClick={handleRestartClick}>Restart</button>
         </>
       )}
     </div>
