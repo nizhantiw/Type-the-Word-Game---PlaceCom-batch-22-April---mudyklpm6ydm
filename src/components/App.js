@@ -36,6 +36,7 @@ function App() {
     } else {
       setResult('You Lost!');
     }
+    setFlashWord(true);
   };
 
   const handleRestartClick = () => {
