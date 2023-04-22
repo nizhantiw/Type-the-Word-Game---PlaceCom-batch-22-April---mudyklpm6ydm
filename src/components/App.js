@@ -44,6 +44,7 @@ function App() {
     } else {
       setIndex(0);
     }
+    setFlashWord(true);
   };
 
   return (
